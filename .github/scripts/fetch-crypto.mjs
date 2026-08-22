@@ -82,5 +82,3 @@ await import("node:fs/promises").then(fs =>
 );
 
 console.log(output);
-
-console.log(output);
