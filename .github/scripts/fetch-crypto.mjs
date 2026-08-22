@@ -70,15 +70,17 @@ const output = {
 };
 
 await import("node:fs/promises").then(fs =>
-  fs.mkdir("out", { recursive: true })
+  fs.mkdir("out/quotes", { recursive: true })
 );
 
 await import("node:fs/promises").then(fs =>
   fs.writeFile(
-    "out/ada.json",
+    "out/quotes/ADA-USD.json",
     JSON.stringify(output),
     "utf8"
   )
 );
+
+console.log(output);
 
 console.log(output);
