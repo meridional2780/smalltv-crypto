@@ -1,0 +1,44 @@
+name: Atualizar cotacao ADA
+
+on:
+  schedule:
+    - cron: "*/5 * * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: crypto-quotes
+  cancel-in-progress: true
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Baixar repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Buscar cotacao
+        run: node .github/scripts/fetch-crypto.mjs
+
+      - name: Publicar JSON
+        run: |
+          cd out
+          git init -q
+          git checkout -q -b data
+          git add ada.json
+          git -c user.name="smalltv-bot" \
+              -c user.email="smalltv-bot@users.noreply.github.com" \
+              commit -q -m "Atualiza ADA ${GITHUB_RUN_ID}"
+          git push -f \
+            "https://x-access-token:${GH_TOKEN}@github.com/${GITHUB_REPOSITORY}.git" \
+            data
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
