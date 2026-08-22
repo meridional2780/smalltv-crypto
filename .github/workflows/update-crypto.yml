@@ -33,7 +33,7 @@ jobs:
           cd out
           git init -q
           git checkout -q -b data
-          git add ada.json
+          git add quotes/ADA-USD.json
           git -c user.name="smalltv-bot" \
               -c user.email="smalltv-bot@users.noreply.github.com" \
               commit -q -m "Atualiza ADA ${GITHUB_RUN_ID}"
